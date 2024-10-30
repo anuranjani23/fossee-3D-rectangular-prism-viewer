@@ -1,0 +1,12 @@
+# Required dependencies for the Rectangular Prism Viewer application
+
+# 3D CAD and modeling library
+pythonocc-core
+
+# GUI toolkit for application interface
+pyqt5
+
+# Numerical computations
+numpy
+
+

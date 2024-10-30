@@ -1,0 +1,10 @@
+name: prism_viewer_myvenv
+dependencies:
+  - python =3.8
+  - numpy
+  - pyqt
+  - sqlite
+  - pythonocc-core
+  - pip:
+      - PyQt5
+      - OCC
