@@ -32,6 +32,6 @@ author="anuranjani",
 
 description="A PyQt5 and PythonOCC based 3D rectangular prism viewer application.",
 
-python_requires=">=3.9",
+python_requires=">=3.8",
 
 )
