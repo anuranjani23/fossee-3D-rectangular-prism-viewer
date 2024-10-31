@@ -35,7 +35,7 @@ class TestPrismViewerApp(unittest.TestCase):
         self.assertIsNotNone(self.viewer.cursor)
         
         # Check if the viewer has been created
-        self.assertTrue(self.viewer.isHidden())  # This should be true since it's not displayed yet
+        self.assertTrue(self.viewer.isHidden())  
 
     @classmethod
     def tearDownClass(cls):
