@@ -15,17 +15,24 @@ build:
     - prism_viewer = prism_viewer.main:main
 
 requirements:
+  build:
+    - python =3.8  
+    - {{ compiler('cxx') }}
   host:
-    - python =3.8
+    - python =3.8  
     - pip
     - setuptools
-    - numpy >=1.23
+    - numpy =1.22.4
+    - swig
+    - pythonocc-core =7.8.1  
   run:
-    - python =3.8
-    - numpy >=1.23
+    - python =3.8  
+    - {{ pin_compatible('numpy') }}
     - pyqt
     - sqlite
-    - pythonocc-core
+    - occt =7.8.1 *novtk*  
+    - six
+    - svgwrite
 
 test:
   imports:
@@ -38,4 +45,8 @@ test:
 about:
   home: "https://github.com/anuranjani23/fossee-3D-rectangular-prism-viewer.git"
   license: MIT
-  summary: "A PyQt5 and PythonOCC based 3D rectangular prism viewer application."
+  summary: "A PyQt5 and PythonOCC-based 3D rectangular prism viewer application."
+
+extra:
+  recipe-maintainers:
+    - anuranjani23
