@@ -8,33 +8,32 @@ from prism_viewer.prism_calculator import PrismCalculator
 class TestPrismViewerApp(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        # Initialize test database
+        # Initialize the test database.
         cls.conn = sqlite3.connect('prisms.db')
         cls.cursor = cls.conn.cursor()
         
-        # Create application instance
+        # Create the application instance.
         cls.app = QApplication(sys.argv)
         cls.viewer = PrismViewer()
     
     def setUp(self):
-        # Reset the application state before each test
+        # Reset the application state before each test.
         self.viewer.designation_dropdown.setCurrentIndex(0)
 
     def test_program_initialization(self):
-        # Check main window properties
         self.assertEqual(self.viewer.windowTitle(), "Rectangular Prism Viewer")
         
-        # Verify essential UI components
+        # Verify essential UI components.
         self.assertIsNotNone(self.viewer.designation_dropdown)
         self.assertIsNotNone(self.viewer.surface_area_label)
         self.assertIsNotNone(self.viewer.volume_label)
         self.assertIsNotNone(self.viewer.display_button)
         
-        # Check database connection
+        # Check the database connections.
         self.assertIsNotNone(self.viewer.conn)
         self.assertIsNotNone(self.viewer.cursor)
         
-        # Check if the viewer has been created
+        # Check if the viewer has been created or not.
         self.assertTrue(self.viewer.isHidden())  
 
     @classmethod
@@ -72,7 +71,7 @@ class TestPrismCalculator(unittest.TestCase):
                 self.assertEqual(result, expected)
     
     def test_zero_value_calculation(self):
-        # Test case: To check if zero is returned for zero dimensions
+        # Test case: To check if zero is returned for zero dimensions.
         # Surface area tests
         self.assertEqual(PrismCalculator.surface_area(0, 0, 0), 0)
         self.assertEqual(PrismCalculator.surface_area(5, 0, 0), 0)
@@ -86,7 +85,7 @@ class TestPrismCalculator(unittest.TestCase):
         self.assertEqual(PrismCalculator.volume(5, 2, 0), 0)
 
     def test_negative_value_calculation(self):
-        # Test case: To ensure handling of errors for negative values
+        # Test case: To ensure handling of errors for negative values.
         negative_cases = [
             (-10, 5, 2),
             (10, -5, 2),
