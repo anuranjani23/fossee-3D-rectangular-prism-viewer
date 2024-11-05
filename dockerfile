@@ -1,36 +1,33 @@
-# Base image
-FROM mambaorg/micromamba:latest
+# Use the official Python image with Python 3.11
+FROM python:3.11-slim
 
-# Set environment variables
-ENV MAMBA_ROOT_PREFIX=/opt/conda
-ENV PATH=$MAMBA_ROOT_PREFIX/bin:$PATH
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    swig \
+    sqlite3 \
+    libqt5widgets5 \
+    && rm -rf /var/lib/apt/lists/*
 
-# Set working directory
+# Set the working directory
 WORKDIR /app
 
-# Copy application code
+# Copy and install dependencies
+COPY requirements.txt .
+RUN pip install --upgrade pip && pip install -r requirements.txt
+
+# Copy the rest of the application code
 COPY . .
 
-# Install base dependencies via micromamba with exact version specifications
-RUN micromamba install -y -n base -c conda-forge \
-    python=3.8 \  
-    numpy=1.22.4 \
-    pyqt \
-    sqlite \
-    six \
-    svgwrite \
-    occt=7.8.1=novtk* \  
-    pythonocc-core=7.8.1=novtk* \
-    && micromamba clean --all --yes
+# Initialize the database if necessary
+RUN python initialize_db.py
 
-# Install build tools
-RUN micromamba install -y -n base -c conda-forge mamba boa conda-build
+# Install the package
+RUN python setup.py install
 
-# Build the Conda package from the recipe
-RUN micromamba run -n base conda mambabuild conda-recipe
+# Expose port if needed (for a web-based app)
+EXPOSE 8000
 
-# Test the installation
-RUN micromamba run -n base python -c "import prism_viewer"
-
-# Set default command
-CMD ["micromamba", "run", "-n", "base", "python", "-m", "prism_viewer.main"]
+# Command to run the application
+ENTRYPOINT ["prism_viewer"]
+CMD ["main"]
