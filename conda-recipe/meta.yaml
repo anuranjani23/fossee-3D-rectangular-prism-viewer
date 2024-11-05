@@ -1,5 +1,5 @@
 {% set name = "prism_viewer" %}
-{% set version = "0.1.0" %}
+{% set version = "0.1.1" %}
 
 package:
   name: {{ name|lower }}
@@ -13,40 +13,60 @@ build:
   script: "{{ PYTHON }} -m pip install . -vv"
   entry_points:
     - prism_viewer = prism_viewer.main:main
+  skip: true  # [py<311]
 
 requirements:
   build:
-    - python =3.8  
+    - python =3.11
     - {{ compiler('cxx') }}
   host:
-    - python =3.8  
+    - python =3.11
     - pip
-    - setuptools
-    - numpy =1.22.4
+    - setuptools =75.3.0
+    - numpy =1.26.4
     - swig
-    - pythonocc-core =7.8.1  
+    - pythonocc-core =7.8.1
+    - pyqt =5.15.9
   run:
-    - python =3.8  
+    - python =3.11
     - {{ pin_compatible('numpy') }}
-    - pyqt
+    - pyqt =5.15.9
+    - pythonocc-core =7.8.1
     - sqlite
-    - occt =7.8.1 *novtk*  
-    - six
+    - occt =7.8.1 
+    - six =1.16.0
     - svgwrite
+    - qt =5.15.9
 
 test:
   imports:
     - prism_viewer
+    - OCC
+    - PyQt5
   requires:
-    - pytest
+    - unittest-xml-reporting
   commands:
-    - python -m pytest prism_viewer/tests/
+    - python -m unittest discover -s prism_viewer/tests/
+  source_files:
+    - prism_viewer/tests/
 
 about:
   home: "https://github.com/anuranjani23/fossee-3D-rectangular-prism-viewer.git"
   license: MIT
-  summary: "A PyQt5 and PythonOCC-based 3D rectangular prism viewer application."
+  license_family: MIT
+  license_file: LICENSE
+  summary: "A PyQt5 and PythonOCC-based 3D rectangular prism viewer application"
+  description: |
+    A 3D viewer application for rectangular prisms built using PyQt5 and PythonOCC.
+    Features include surface area and volume calculations, interactive 3D visualization,
+    and SQLite database storage.
+  doc_url: https://github.com/anuranjani23/fossee-3D-rectangular-prism-viewer/blob/main/README.md
+  dev_url: https://github.com/anuranjani23/fossee-3D-rectangular-prism-viewer
 
 extra:
   recipe-maintainers:
     - anuranjani23
+  platforms:
+    - linux
+    - osx
+    - win-64
