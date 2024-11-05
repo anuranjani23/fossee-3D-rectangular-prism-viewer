@@ -1,12 +1,10 @@
-# Required dependencies for the Rectangular Prism Viewer application
-
-# 3D CAD and modeling library
-pythonocc-core
-
-# GUI toolkit for application interface
-pyqt5
-
-# Numerical computations
-numpy
-
-
+numpy==1.26.4
+swig
+pythonocc-core==7.8.1
+pyqt==5.15.9
+six==1.16.0
+svgwrite
+sqlite
+occt==7.8.1
+qt==5.15.9
+wxpython==4.2.2
