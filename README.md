@@ -1,7 +1,3 @@
-Here's an updated `README.md` to reflect the latest details and ensure compatibility with Python 3.11 and the project's environment setup.
-
----
-
 # Rectangular Prism Viewer
 
 ## Project Overview
