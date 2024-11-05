@@ -1,16 +1,21 @@
+Here's an updated `README.md` to reflect the latest details and ensure compatibility with Python 3.11 and the project's environment setup.
+
+---
+
 # Rectangular Prism Viewer
 
 ## Project Overview
 
-The **Rectangular Prism Viewer** is a desktop application built with **PyQt5** that allows users to view and analyze 3D models of rectangular prisms. The application retrieves prism dimensions from a **SQLite** database, calculates the surface area and volume, and displays a 3D CAD model using **PythonOCC**. This project emphasizes software quality through rigorous unit testing and packaging for easy distribution.
+The **Rectangular Prism Viewer** is a desktop application developed in **PyQt5** that enables users to view, analyze, and interact with 3D models of rectangular prisms. The application retrieves prism dimensions from a **SQLite** database, calculates surface area and volume, and displays a detailed 3D CAD model using **PythonOCC**. This project prioritizes software quality through unit testing and packaging for easy deployment and distribution.
 
 ## Installation Instructions
 
-To set up the application, follow these steps:
+To set up the application environment, follow these steps:
 
-1. **Install the required Python packages:**
+1. **Create and activate a Conda environment with the required dependencies:**
     ```bash
-    pip install -r requirements.txt
+    conda env create -f environment.yml
+    conda activate prism_viewer_env
     ```
 
 2. **Initialize the SQLite database with sample data:**
@@ -20,120 +25,142 @@ To set up the application, follow these steps:
 
 3. **Run the application:**
     ```bash
-    python main.py
+    prism_viewer  # or `python -m prism_viewer.main` if not configured
     ```
 
 ## Usage Guidelines
 
-1. **Select a prism designation** from the dropdown menu.
-2. **View the calculated surface area and volume**.
-3. **Click the "Display 3D Model" button** to visualize the prism.
+1. **Select a prism designation** from the dropdown menu in the main application window.
+2. **View the calculated surface area and volume** for the selected prism.
+3. **Click "Display 3D Model"** to visualize the prism model in a 3D interactive view.
 
 ## Testing Methodology
 
-This application utilizes the built-in Python module `unittest` for automated testing, providing:
+This application employs Python's `unittest` framework for automated testing. This framework provides:
 
-- **Test Discovery**: Automatically identifies tests to run.
-- **Rich Assertion Methods**: Facilitates various test assertions to ensure code functionality.
-- **Test Fixture Support**: Allows setup and teardown of test environments.
-- **Subtest Capability**: Supports parameterized testing scenarios.
+- **Test Discovery**: Automatically finds tests to execute.
+- **Assertion Methods**: Verifies expected outputs at various stages.
+- **Fixture Support**: Manages setup and teardown for each test.
+- **Subtest Support**: Facilitates parameterized testing to handle a variety of cases.
 
 ### Test Structure
 
-The test suite consists of two main classes:
+The test suite comprises two main classes:
 
-- `TestPrismViewerApp`: Focused on UI and integration tests.
-- `TestPrismCalculator`: Concentrated on the core calculation logic.
+- `TestPrismViewerApp`: Focused on user interface and application integration tests.
+- `TestPrismCalculator`: Ensures the accuracy and reliability of the core prism calculations.
 
 ### Testing Categories
 
 1. **Application Testing**
-   - Program initialization
-   - UI component verification
+   - Initialization of the main application
+   - Verification of UI components
    - Database connectivity
-   - Window properties
+   - Window properties and behaviors
 
 2. **Calculation Testing**
-   - Surface area computation
-   - Volume computation
-   - Edge cases
-   - Error handling
+   - Correctness of surface area and volume computations
+   - Handling of edge cases
+   - Error handling for invalid inputs
 
 ## Generating an Executable Installer
 
-To create an executable installer for this project, follow these steps:
+To create a standalone executable installer:
 
-1. **Install PyInstaller:**
+1. **Install PyInstaller** (if not already in your environment):
     ```bash
     pip install pyinstaller
     ```
 
-2. **Run PyInstaller to generate the executable:**
+2. **Use PyInstaller to generate the executable:**
     ```bash
-    pyinstaller --onefile main.py
+    pyinstaller --onefile prism_viewer/main.py
     ```
 
-3. The executable will be generated in the `dist` folder, ready for distribution.
+3. The executable will be created in the `dist` folder and will be ready for distribution.
 
 ## Packaging Strategy
 
 ### Conda Package
 
-The Conda package is structured using a `meta.yaml` file, ensuring proper metadata specification, dependencies, and build requirements are met.
+The Conda package is defined in `meta.yaml`, specifying dependencies and metadata to facilitate reproducible environment creation. Below is a sample of the configuration:
 
 ```yaml
 package:
   name: prism_viewer
-  version: 0.1.0
+  version: 0.1.1
 
 requirements:
   build:
-    - python =3.8
+    - python=3.11
     - {{ compiler('cxx') }}
   host:
-    - python =3.8
+    - python=3.11
     - pip
     - setuptools
-    - numpy =1.22.4
+    - numpy=1.26.4
     - swig
-    - pythonocc-core =7.8.1
+    - pythonocc-core=7.8.1
+  run:
+    - python=3.11
+    - pyqt=5.15.9
+    - sqlite
+    - six=1.16.0
+    - svgwrite
 ```
+
 ### PIP Project
 
-The PIP package is implemented with a setup.py file that includes necessary metadata and requirements.
+The PIP package is configured using `setup.py`, which includes necessary metadata and requirements. Below is a sample `setup.py`:
 
-```py
+```python
 from setuptools import setup, find_packages
 
 setup(
     name="prism-viewer",
-    version="0.1.0",
+    version="0.1.1",
     packages=find_packages(),
     install_requires=[
-        "PyQt5",
-        "numpy",
-        "OCC-Core",
+        "PyQt5==5.15.9",
+        "numpy==1.26.4",
+        "pythonocc-core==7.8.1",
+        "six==1.16.0",
+        "svgwrite",
     ],
     entry_points={
         'console_scripts': [
-            'prism-viewer=main:main',
+            'prism_viewer=prism_viewer.main:main',
         ],
     },
-    python_requires=">=3.8",
+    python_requires=">=3.11",
 )
 ```
+
 ### Build and Test Execution Steps
 
-Environment Setup:
+#### Docker Setup
+
+To build the application in a Docker container:
 
 ```bash
 docker build -t rectangular_prism_viewer .
 ```
 
-Test Execution:
+#### Running Tests
+
+Execute the test suite to ensure functionality:
 
 ```bash
 python -m unittest discover -v
 ```
 
+#### Conda Environment Setup
 
+This project is designed to run in a **Conda environment with Python 3.11**. Make sure to use the provided `environment.yml` file for an easy setup:
+
+```bash
+conda env create -f environment.yml
+conda activate prism_viewer_env
+```
+
+---
